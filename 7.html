@@ -6,7 +6,6 @@
     <title>皮卡应用</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 原有样式保持不变 */
         * {
             margin: 0;
             padding: 0;
@@ -15,6 +14,7 @@
         }
         
         :root {
+            /* 默认深色模式变量 */
             --primary: #6a11cb;
             --secondary: #2575fc;
             --accent: #ff6b6b;
@@ -24,15 +24,39 @@
             --success: #27ae60;
             --card-bg: rgba(26, 26, 46, 0.8);
             --header-height: 60px;
+            --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --text-primary: #f8f9fa;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --header-bg: rgba(26, 26, 46, 0.95);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --footer-bg: rgba(26, 26, 46, 0.9);
+            --tag-bg: rgba(106, 17, 203, 0.2);
+            --tag-color: #a5b4fc;
+            --stat-bg: rgba(106, 17, 203, 0.2);
+        }
+        
+        /* 浅色模式变量 */
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --text-primary: #1a1a2e;
+            --text-secondary: rgba(26, 26, 46, 0.8);
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --footer-bg: rgba(255, 255, 255, 0.9);
+            --tag-bg: rgba(106, 17, 203, 0.1);
+            --tag-color: #6a11cb;
+            --stat-bg: rgba(106, 17, 203, 0.1);
         }
         
         body {
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-            color: var(--light);
+            background: var(--bg-gradient);
+            color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
             padding-top: var(--header-height);
             overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
         }
         
         .container {
@@ -48,11 +72,11 @@
             left: 0;
             right: 0;
             height: var(--header-height);
-            background: rgba(26, 26, 46, 0.95);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, background 0.3s ease;
         }
         
         header.hide {
@@ -72,7 +96,8 @@
             gap: 10px;
             font-size: 22px;
             font-weight: bold;
-            color: white;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
         
         .logo i {
@@ -83,13 +108,39 @@
         .nav-container {
             position: relative;
             height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* 主题切换按钮 */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--tag-bg);
+        }
+        
+        .theme-toggle i {
+            font-size: 20px;
         }
         
         .nav-toggle {
             display: none;
             background: none;
             border: none;
-            color: white;
+            color: var(--text-primary);
             font-size: 24px;
             cursor: pointer;
         }
@@ -103,7 +154,7 @@
         .nav a {
             display: flex;
             align-items: center;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
@@ -115,7 +166,7 @@
         }
         
         .nav a:hover, .nav a.active {
-            color: white;
+            color: var(--text-primary);
             background: rgba(106, 17, 203, 0.2);
         }
         
@@ -156,7 +207,7 @@
             font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -165,7 +216,7 @@
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-secondary);
         }
         
         .section-title {
@@ -175,6 +226,7 @@
             position: relative;
             display: inline-block;
             padding-bottom: 10px;
+            color: var(--text-primary);
         }
         
         .section-title::after {
@@ -190,14 +242,15 @@
         
         /* 绿茶VPN特色卡片 */
         .feature-card {
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(36, 36, 62, 0.8) 100%);
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(36, 36, 62, 0.8) 100%);
             border-radius: 20px;
             overflow: hidden;
             display: flex;
             margin: 40px 0;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
+            transition: background 0.3s ease, border 0.3s ease;
         }
         
         .feature-image {
@@ -239,14 +292,14 @@
             font-size: 2.2rem;
             font-weight: 700;
             margin-bottom: 15px;
-            color: white;
-            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         .feature-description {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-secondary);
             margin-bottom: 25px;
             line-height: 1.8;
             font-size: 1.1rem;
@@ -264,7 +317,7 @@
             flex-direction: column;
             align-items: center;
             padding: 15px;
-            background: rgba(106, 17, 203, 0.2);
+            background: var(--stat-bg);
             border-radius: 10px;
             transition: transform 0.3s;
         }
@@ -282,7 +335,7 @@
         
         .stat-label {
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text-secondary);
             margin-top: 5px;
         }
         
@@ -294,8 +347,8 @@
         }
         
         .tag {
-            background: rgba(106, 17, 203, 0.2);
-            color: #a5b4fc;
+            background: var(--tag-bg);
+            color: var(--tag-color);
             padding: 8px 16px;
             border-radius: 50px;
             font-size: 0.9rem;
@@ -344,7 +397,7 @@
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
             cursor: pointer;
         }
         
@@ -390,11 +443,11 @@
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 10px;
-            color: white;
+            color: var(--text-primary);
         }
         
         .card-desc {
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-secondary);
             font-size: 0.9rem;
             margin-bottom: 15px;
             line-height: 1.6;
@@ -430,15 +483,16 @@
         
         /* 页脚样式 */
         footer {
-            background: rgba(26, 26, 46, 0.9);
+            background: var(--footer-bg);
             padding: 30px 0 20px;
             margin-top: 60px;
             text-align: center;
+            transition: background 0.3s ease;
         }
         
         .copyright {
             padding-top: 20px;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
         
@@ -453,7 +507,7 @@
                 top: 100%;
                 right: 0;
                 flex-direction: column;
-                background: rgba(26, 26, 46, 0.95);
+                background: var(--header-bg);
                 backdrop-filter: blur(10px);
                 width: 200px;
                 height: auto;
@@ -526,6 +580,10 @@
             .hero h1 {
                 font-size: 1.6rem;
             }
+            
+            .nav-container {
+                gap: 10px;
+            }
         }
         
         /* 动画效果 */
@@ -590,13 +648,13 @@
         }
         
         .modal-content {
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(36, 36, 62, 0.95) 100%);
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(36, 36, 62, 0.95) 100%);
             border-radius: 20px;
             width: 90%;
             max-width: 500px;
             padding: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
             position: relative;
             animation: modalSlideIn 0.5s ease;
         }
@@ -612,7 +670,7 @@
             right: 15px;
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text-secondary);
             font-size: 24px;
             cursor: pointer;
             transition: color 0.3s;
@@ -631,7 +689,7 @@
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -659,6 +717,7 @@
             padding: 8px 0;
             display: flex;
             align-items: center;
+            color: var(--text-primary);
         }
         
         .modal-features li i {
@@ -695,7 +754,7 @@
             <button class="modal-close" id="modalClose">&times;</button>
             <div class="modal-header">
                 <h2 class="modal-title">全新软件上线</h2>
-                <span class="modal-badge">天喵免费加速器</span>
+                <span class="modal-badge">永久免费</span>
             </div>
             <div class="modal-body">
                 <p>我们很高兴推出全新VPN服务，为您提供极致的上网体验：</p>
@@ -723,6 +782,10 @@
                 </div>
                 
                 <div class="nav-container">
+                    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
                     <button class="nav-toggle" id="navToggle">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -750,48 +813,40 @@
     <main class="container">
         <!-- 首页内容 -->
         <section id="home" class="content-section active">
-            
-            
-            <!-- 绿茶VPN特色卡片 -->
-            
-            
             <h2 class="section-title">热门应用</h2>
             
             <div class="cards-grid">
-            <!-- 游戏卡片1 -->
-            
-            <div class="card">
-
+                <!-- 游戏卡片1 -->
+                
+                                <div class="card">
                     <div class="card-content">
                         <h3 class="card-title">天喵免费加速器</h3>
                         <p class="card-desc"></p>
                         <div class="card-footer">
                             <div class="card-rating">
                                 <i class="fas fa-star"></i>
-                                <span>8.6</span>
+                                <span>8.1</span>
                             </div>
-                            <a href="https://www.372164885.xyz/article/example-4" class="card-button">试玩</a>
+                            <a href="https://tianmiaovpn.com" class="card-button">试玩</a>
                         </div>
                     </div>
                 </div>
-            
-            <div class="card">
-
+                
+                                <div class="card">
                     <div class="card-content">
                         <h3 class="card-title">绿茶VPN</h3>
                         <p class="card-desc"></p>
                         <div class="card-footer">
                             <div class="card-rating">
                                 <i class="fas fa-star"></i>
-                                <span>7.7</span>
+                                <span>8.1</span>
                             </div>
-                            <a href="https://share.feijipan.com/s/BwOctDrs" class="card-button">试玩</a>
+                            <a href="https://t4.lcvpn.cc/" class="card-button">试玩</a>
                         </div>
                     </div>
                 </div>
-            
+                
                 <div class="card">
-
                     <div class="card-content">
                         <h3 class="card-title">MT管理器</h3>
                         <p class="card-desc"></p>
@@ -807,12 +862,11 @@
                 
                 <!-- 游戏卡片2 -->
                 <div class="card">
-                    
                     <div class="card-content">
                         <h3 class="card-title">Dragonjs</h3>
                         <p class="card-desc"></p>
                         <div class="card-footer">
-                            <div class="card-rrating">
+                            <div class="card-rating">
                                 <i class="fas fa-star"></i>
                                 <span>8.3</span>
                             </div>
@@ -822,7 +876,6 @@
                 </div>
                 
                 <div class="card">
-                    
                     <div class="card-content">
                         <h3 class="card-title">zarchiver解压软件</h3>
                         <p class="card-desc"></p>
@@ -838,7 +891,6 @@
                 
                 <!-- 游戏卡片3 -->
                 <div class="card">
-                    
                     <div class="card-content">
                         <h3 class="card-title">旋风加速器</h3>
                         <p class="card-desc"></p>
@@ -853,7 +905,6 @@
                 </div>
                 
                 <div class="card">
-                    
                     <div class="card-content">
                         <h3 class="card-title">AGE动漫</h3>
                         <p class="card-desc"></p>
@@ -869,7 +920,6 @@
                 
                 <!-- 游戏卡片4 -->
                 <div class="card">
-                    
                     <div class="card-content">
                         <h3 class="card-title">安易加速器</h3>
                         <p class="card-desc"></p>
@@ -884,7 +934,6 @@
                 </div>
                 
                 <div class="card">
-                    
                     <div class="card-content">
                         <h3 class="card-title">乐享云(磁力云升级版)</h3>
                         <p class="card-desc"></p>
@@ -899,7 +948,6 @@
                 </div>
                  
                  <div class="card">
-                    
                     <div class="card-content">
                         <h3 class="card-title">禁漫天堂</h3>
                         <p class="card-desc"></p>
@@ -908,19 +956,13 @@
                                 <i class="fas fa-star"></i>
                                 <span>9.0</span>
                             </div>
-                            <a href="https://www.372164885.xyz/" class="card-button">试玩</a>
+                            <a href="#" class="card-button">试玩</a>
                         </div>
                     </div>
                 </div>
-                 
             </div>
         </section>
-        
-        
-        
-        
-        
-  
+    </main>
 
     <footer>
         <div class="container">
@@ -935,6 +977,40 @@
     </a>
 
     <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // 检查本地存储中的主题偏好
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // 更新图标
+        updateThemeIcon(savedTheme);
+        
+        // 切换主题函数
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            updateThemeIcon(newTheme);
+        }
+        
+        // 更新主题图标
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-moon';
+            } else {
+                themeIcon.className = 'fas fa-sun';
+            }
+        }
+        
+        // 添加点击事件监听器
+        themeToggle.addEventListener('click', toggleTheme);
+        
         // 页面加载完成后显示模态窗口
         document.addEventListener('DOMContentLoaded', function() {
             // 显示模态窗口
